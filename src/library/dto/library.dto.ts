@@ -10,3 +10,8 @@ export class UpdateBookDto {
     "description": string;
     "status": BookStatus;
 }
+
+export class BooksByFiltersDto {
+    "status"?: BookStatus;
+    "search"?: string;
+}

@@ -10,6 +10,23 @@ export class LibraryService {
         return this.books;
     }
 
+    public getBooksByFilters(bookByFilters: { status?: BookStatus, search?: string }): Book[] {
+        const { search, status } = bookByFilters;
+        let tmpBooks: Book[] = this.getBooks();
+
+        // first status filter
+        if(status){
+            tmpBooks = tmpBooks.filter((book: Book) => book.status === status);
+        }
+
+        if(search) {
+            tmpBooks = tmpBooks.filter((book: Book) => book.description.includes(search) || book.title.includes(search)? true : false)
+        }
+
+
+        return tmpBooks;
+    }
+
     public getBookById(id: string): Book | undefined {
         return this.books.find((book: Book) => book._id === id)
     }

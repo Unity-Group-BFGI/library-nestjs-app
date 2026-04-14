@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HostParam, HttpCode, Param, Patch, Post, Query, Redirect, Req, Res } from '@nestjs/common';
 import { LibraryService } from '../services/library.service';
 import type { Book, RemoveBook, UpdateBookResponse } from '../models/library.model';
-import { AddBookDto, UpdateBookDto } from '../dto/library.dto';
+import { AddBookDto, BooksByFiltersDto, UpdateBookDto } from '../dto/library.dto';
 
 @Controller('library')
 export class LibraryController {
@@ -11,8 +11,12 @@ export class LibraryController {
     }
 
     @Get("/books")
-    getBooks(): Book[] {
-        return this.libraryService.getBooks();
+    getBooks(@Query() bookByFilters: BooksByFiltersDto): Book[] {
+        if(Object.keys(bookByFilters).length > 0){
+            return this.libraryService.getBooksByFilters(bookByFilters);
+        } else {
+            return this.libraryService.getBooks();
+        }
     }
 
     @Post("/book/add")
@@ -34,4 +38,6 @@ export class LibraryController {
     updateBookById(@Param('id') id: string, @Body() updateBook: UpdateBookDto): UpdateBookResponse {
         return this.libraryService.updateBookById(id, updateBook);
     }
+
+
 }
