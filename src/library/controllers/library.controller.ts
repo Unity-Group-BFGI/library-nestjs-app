@@ -19,4 +19,9 @@ export class LibraryController {
     addBook(@Body() addBookDto: AddBookDto): Book {
         return this.libraryService.addBook(addBookDto);
     }
+
+    @Get("/book/:id")
+    getBookById(@Param("id") id: string): Book | undefined {
+        return this.libraryService.getBookById(id);
+    }
 }

@@ -10,6 +10,10 @@ export class LibraryService {
         return this.books;
     }
 
+    public getBookById(id: string): Book | undefined {
+        return this.books.find((book: Book) => book._id === id)
+    }
+
     public addBook(book: AddBookDto): Book {
         const { title, description } = book;
         const newBook: Book = {
