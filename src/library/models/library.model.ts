@@ -15,3 +15,9 @@ export interface RemoveBook {
     _id: string;
     deleted: boolean;
 }
+
+export interface UpdateBookResponse {
+    _id: string;
+    book: Book | null;
+    updated: boolean;
+}

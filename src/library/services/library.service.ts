@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Book, BookStatus, RemoveBook } from '../models/library.model';
-import { AddBookDto } from '../dto/library.dto';
+import { Book, BookStatus, RemoveBook, UpdateBookResponse } from '../models/library.model';
+import { AddBookDto, UpdateBookDto } from '../dto/library.dto';
 
 @Injectable()
 export class LibraryService {
@@ -34,4 +34,64 @@ export class LibraryService {
             deleted: bookFound? false : true
         }
     }
+
+    public updateBookById(id: string, updateBook: UpdateBookDto): UpdateBookResponse {
+        let oldBook: Book | undefined = this.getBookById(id);
+        if(oldBook) {
+            Object.assign(oldBook, updateBook);
+            return {
+                book: oldBook,
+                _id: id,
+                updated: true
+            }
+        } else {
+            return {
+                updated: false,
+                _id: id,
+                book: null
+            }
+        }
+    }
+
+    public updateBookByIdTest(id: string, updateBook: UpdateBookDto): UpdateBookResponse {
+        const { title, status, description }: Book = updateBook;
+        const oldBook: Book | undefined = this.getBookById(id);
+        if(oldBook){
+            oldBook.status = status;
+            return {
+                book: oldBook,
+                _id: id,
+                updated: true
+            }
+        } else {
+            return {
+                book: null,
+                _id: id,
+                updated: false
+            }
+        }
+    }
+
+    // Correct solution:
+    // Your original method only updates the local variable `oldBook`.
+    // It does not update the object stored inside `this.books`.
+    // public updateBookById(id: string, updateBook: UpdateBookDto): UpdateBookResponse {
+    //     const oldBook: Book | undefined = this.getBookById(id);
+    //
+    //     if(oldBook) {
+    //         Object.assign(oldBook, updateBook);
+    //
+    //         return {
+    //             book: oldBook,
+    //             _id: id,
+    //             updated: true
+    //         }
+    //     } else {
+    //         return {
+    //             updated: false,
+    //             _id: id,
+    //             book: null
+    //         }
+    //     }
+    // }
 }

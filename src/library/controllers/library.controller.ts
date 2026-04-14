@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, HostParam, HttpCode, Param, Post, Query, Redirect, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HostParam, HttpCode, Param, Patch, Post, Query, Redirect, Req, Res } from '@nestjs/common';
 import { LibraryService } from '../services/library.service';
-import type { Book, RemoveBook } from '../models/library.model';
-import { AddBookDto } from '../dto/library.dto';
+import type { Book, RemoveBook, UpdateBookResponse } from '../models/library.model';
+import { AddBookDto, UpdateBookDto } from '../dto/library.dto';
 
 @Controller('library')
 export class LibraryController {
@@ -28,5 +28,10 @@ export class LibraryController {
     @Delete("/book/remove/:id")
     removeBookById(@Param('id') id: string): RemoveBook {
         return this.libraryService.removeBookById(id);
+    }
+
+    @Patch("/book/update/:id")
+    updateBookById(@Param('id') id: string, @Body() updateBook: UpdateBookDto): UpdateBookResponse {
+        return this.libraryService.updateBookById(id, updateBook);
     }
 }
