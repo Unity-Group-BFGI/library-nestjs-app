@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Book, BookStatus } from '../models/library.model';
+import { Book, BookStatus, RemoveBook } from '../models/library.model';
 import { AddBookDto } from '../dto/library.dto';
 
 @Injectable()
@@ -24,5 +24,14 @@ export class LibraryService {
         };
         this.books.push(newBook);
         return newBook;
+    }
+
+    public removeBookById(id: string): RemoveBook {
+        this.books = this.books.filter((book: Book) => book._id !== id);
+        const bookFound = this.books.find((book: Book) => book._id === id);
+        return {
+            _id: id,
+            deleted: bookFound? false : true
+        }
     }
 }

@@ -10,3 +10,8 @@ export enum BookStatus {
     TRASH = 'trash',
     DRAFT = 'draft'
 }
+
+export interface RemoveBook {
+    _id: string;
+    deleted: boolean;
+}
